@@ -11,9 +11,17 @@ app = FastAPI(title="App pret à dépenser",
     )
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+# @app.get("/")
+# async def root():
+#     return {"message": "Hello World"}
+
+@app.get("/", response_class=PlainTextResponse)
+async def running():
+  note = """
+Credit Card Fraud Detection API 🙌🏻
+Note: add "/docs" to the URL to get the Swagger UI Docs or "/redoc"
+  """
+  return note
 
 
 
@@ -26,8 +34,6 @@ df_test_prod.drop(columns=['TARGET'], inplace=True)
 df_test_prod_request  = df_test_prod.set_index('SK_ID_CURR')
 # Création list des clients 
 clients_id = df_test_prod["SK_ID_CURR"].tolist() 
-
-
 
 
 
@@ -59,6 +65,7 @@ async def fonction_predict_LGBM(id: int):
             "probability_0" : prob_preds[0][0],
             "probability_1" : prob_preds[0][1],}
     
+
 
 # 4. Run the API with uvicorn
 #    Will run on http://127.0.0.1:8000
