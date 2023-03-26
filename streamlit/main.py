@@ -17,10 +17,24 @@ def st_shap(plot, height=None):
     components.html(shap_html, height=height)
 
 
-# Read 
-list_file = open('cols_shap_local.pickle','rb')
-cols_shap_local = pickle.load(list_file)
-print(cols_shap_local)
+# # Read 
+# list_file = open('cols_shap_local.pickle','rb')
+# cols_shap_local = pickle.load(list_file)
+# print(cols_shap_local)
+
+
+try:
+    with open('cols_shap_local.pickle', 'rb') as file:
+        cols_shap_local = pickle.load(file)
+    print(cols_shap_local)
+except FileNotFoundError:
+    print("File not found")
+except pickle.UnpicklingError:
+    print("Error loading pickle data")
+
+
+
+
 
 
 
