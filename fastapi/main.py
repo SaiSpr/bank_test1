@@ -39,7 +39,7 @@ clients_id = df_test_prod["SK_ID_CURR"].tolist()
 
 
 # fonction predict
-@app.get('/predict/{id}')
+@app.post('/predict/{id}')
 async def fonction_predict_LGBM(id: int):
 
     if id not in clients_id:
