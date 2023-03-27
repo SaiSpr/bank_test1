@@ -1,33 +1,70 @@
-version: '3.3'
+# version: '3.3'
+
+# services:
+#     fastapi:
+#         #platform: Linux/UNIX
+#         build: fastapi/
+#         command: uvicorn main:app --host 0.0.0.0 --port 8008
+#         volumes:
+#             - ./:/usr/src/app
+#         ports: 
+#             - 8008:8008 
+#         networks:
+#             - deploy_network
+#         container_name: fastapi
+
+#     streamlit:
+#         #platform: Linux/UNIX
+#         build: streamlit/
+#         command: streamlit run main.py
+#         volumes:
+#             - ./:/usr/src/app
+#         depends_on:
+#             - fastapi
+#         ports: 
+#             - 80:8501
+            
+#         networks:
+#             - deploy_network
+#         container_name: streamlit
+
+# networks:
+#     deploy_network:
+#         driver: bridge
+        
+        
+        
+version: "3.7"
 
 services:
-    fastapi:
-        #platform: Linux/UNIX
-        build: fastapi/
-        command: uvicorn main:app --host 0.0.0.0 --port 8008
-        volumes:
-            - ./:/usr/src/app
-        ports: 
-            - 8008:8008 
-        networks:
-            - deploy_network
-        container_name: fastapi
+  frontend:
+    build: frontend
+    ports:
+      - 8501:8501
+    networks: 
+      AIservice: 
+        aliases: 
+          - frontend.docker
+    depends_on:
+      - backend
+    volumes:
+        - ./frontend:/app
+        - ./storage:/storage
 
-    streamlit:
-        #platform: Linux/UNIX
-        build: streamlit/
-        command: streamlit run main.py
-        volumes:
-            - ./:/usr/src/app
-        depends_on:
-            - fastapi
-        ports: 
-            - 80:8501
-            
-        networks:
-            - deploy_network
-        container_name: streamlit
+  backend:
+    build: backend
+    ports:
+      - 8000:8000
+    networks: 
+      AIservice: 
+        aliases: 
+          - backend.docker
+    volumes:
+      - ./backend:/app
+      - ./storage:/storage
+
+
 
 networks:
-    deploy_network:
-        driver: bridge
+  AIservice:
+    external: true
